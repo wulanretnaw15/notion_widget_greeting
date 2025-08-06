@@ -1,107 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Greeting Widget</title>
+  <meta charset="UTF-8">
+  <title>Greeting Message</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #F4F4F4;
+      margin: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
 
-    <!-- Inter font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    #lbl {
+      text-align: center;
+      padding: 20px;
+      color: #192A56;
+      font-size: 2rem;
+      line-height: 1.5;
+      font-family: 'Dancing Script', cursive;
+    }
 
-    <style>
-        body {
-            background-color: #F4F4F4;
-            font-family: 'Inter', sans-serif;
-            color: #192A56;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .card {
-            padding: 20px 40px;
-            border-radius: 10px;
-            background-color: #ffffff;
-            border: 1px solid #192A56;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
-            text-align: center;
-            display: inline-block;
-        }
-
-        .greet {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .date {
-            font-size: 1em;
-            margin-bottom: 10px;
-        }
-
-        .clock {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .time {
-            display: inline-block;
-            min-width: 30px;
-        }
-
-        .colon {
-            display: inline-block;
-            padding: 0 5px;
-        }
-    </style>
+    #date {
+      font-size: 1.2rem;
+      font-family: 'Bebas Neue', sans-serif;
+    }
+  </style>
 </head>
 <body>
+  <div id="lbl"></div>
 
-    <div class="card">
-        <div class="greet" id="greet"></div>
-        <div class="date" id="date"></div>
-        <div class="clock">
-            <span class="time" id="hour"></span>
-            <span class="colon">:</span>
-            <span class="time" id="min"></span>
-            <span class="colon">:</span>
-            <span class="time" id="sec"></span>
-        </div>
-    </div>
+  <script>
+    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const now = new Date();
+    const hrs = now.getHours();
+    const dayOfWeek = weekday[now.getDay()];
+    const date = `${dayOfWeek}, ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const hour = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
+    let greet;
 
-            document.getElementById("hour").textContent = (hour % 12 || 12).toString().padStart(2, '0');
-            document.getElementById("min").textContent = minutes.toString().padStart(2, '0');
-            document.getElementById("sec").textContent = seconds.toString().padStart(2, '0') + (hour >= 12 ? ' pm' : ' am');
+    if (hrs < 12) {
+      greet = "Rise and shine, Team!";
+    } else if (hrs >= 12 && hrs < 17) {
+      greet = "Halfway there, keep it up!";
+    } else if (hrs >= 17 && hrs < 21) {
+      greet = "You did great today!";
+    } else {
+      greet = "Sleep tight, champs!";
+    }
 
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: '2-digit' };
-            document.getElementById("date").textContent = now.toLocaleDateString("en-US", options);
-
-            let greetText = "";
-            if (hour >= 5 && hour < 12) {
-                greetText = "Rise and shine, Team!";
-            } else if (hour >= 12 && hour < 17) {
-                greetText = "Halfway there, keep it up!";
-            } else if (hour >= 17 && hour < 21) {
-                greetText = "You did great today!";
-            } else {
-                greetText = "Sleep tight, champs!";
-            }
-
-            document.getElementById("greet").textContent = greetText;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock(); // initial call
-    </script>
-
+    document.getElementById('lbl').innerHTML = `
+      ${greet}<br>
+      <div id="date">It's ${date}</div>
+    `;
+  </script>
 </body>
 </html>
