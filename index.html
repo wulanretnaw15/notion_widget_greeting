@@ -1,131 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jam Digital Notion</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeting Widget</title>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
-    .container {
-      padding: 1em;
-      box-sizing: border-box;
-      display: inline-block;
-    }
+    <style>
+        body {
+            background-color: #F4F4F4;
+            font-family: 'Inter', sans-serif;
+            color: #192A56;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    .card {
-      padding: 10px 25px;
-      border-radius: 10px;
-      background-color: #F4F4F4;
-      color: #192A56;
-      border: 2px solid #192A56;
-      display: inline-block;
-      font-family: 'Roboto', sans-serif;
-    }
+        .card {
+            padding: 20px 40px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            border: 1px solid #192A56;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+            display: inline-block;
+        }
 
-    .card:hover {
-      margin-top: 2px;
-    }
+        .greet {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-    .clock {
-      display: inline-block;
-      font-weight: bold;
-      font-size: 1.2em;
-    }
+        .date {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
 
-    .time {
-      display: inline-block;
-      min-width: 37px;
-    }
+        .clock {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
 
-    .colon {
-      font-size: 1.1em;
-      display: inline-block;
-    }
+        .time {
+            display: inline-block;
+            min-width: 30px;
+        }
 
-    .date, .greet {
-      display: block;
-      min-width: 162px;
-      font-size: 1.2em;
-    }
-  </style>
+        .colon {
+            display: inline-block;
+            padding: 0 5px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
+
     <div class="card">
-      <div class="greet" id="greet"></div>
-      <div class="date" id="date"></div>
-      <div class="clock">
-        <div class="time" id="hour"></div>
-        <div class="colon">:</div>
-        <div class="time" id="min"></div>
-        <div class="colon">:</div>
-        <div class="time" id="sec"></div>
-        <div class="time" id="ampm"></div>
-      </div>
+        <div class="greet" id="greet"></div>
+        <div class="date" id="date"></div>
+        <div class="clock">
+            <span class="time" id="hour"></span>
+            <span class="colon">:</span>
+            <span class="time" id="min"></span>
+            <span class="colon">:</span>
+            <span class="time" id="sec"></span>
+        </div>
     </div>
-  </div>
 
-  <script>
-    function date() {
-      const today = new Date();
-      document.getElementById('date').innerHTML = today.toDateString();
-    }
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
 
-    function clock() {
-      const today = new Date();
-      const hrs = today.getHours();
-      const hour = zeros(twelveHour(hrs));
-      const minutes = zeros(today.getMinutes());
-      const seconds = zeros(today.getSeconds());
-      const ampm = hrs >= 12 ? "pm" : "am";
+            document.getElementById("hour").textContent = (hour % 12 || 12).toString().padStart(2, '0');
+            document.getElementById("min").textContent = minutes.toString().padStart(2, '0');
+            document.getElementById("sec").textContent = seconds.toString().padStart(2, '0') + (hour >= 12 ? ' pm' : ' am');
 
-      let greet = '';
-      if (hrs >= 0 && hrs < 12) {
-        greet = 'Rise and shine, Team!';
-      } else if (hrs >= 12 && hrs < 17) {
-        greet = 'Halfway there, keep it up!';
-      } else if (hrs >= 17 && hrs < 22) {
-        greet = 'You did great today!';
-      } else {
-        greet = 'Sleep tight, champs!';
-      }
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: '2-digit' };
+            document.getElementById("date").textContent = now.toLocaleDateString("en-US", options);
 
-      document.getElementById('greet').innerHTML = greet;
-      document.getElementById('hour').innerHTML = hour;
-      document.getElementById('min').innerHTML = minutes;
-      document.getElementById('sec').innerHTML = seconds;
-      document.getElementById('ampm').innerHTML = " " + ampm;
-    }
+            let greetText = "";
+            if (hour >= 5 && hour < 12) {
+                greetText = "Rise and shine, Team!";
+            } else if (hour >= 12 && hour < 17) {
+                greetText = "Halfway there, keep it up!";
+            } else if (hour >= 17 && hour < 21) {
+                greetText = "You did great today!";
+            } else {
+                greetText = "Sleep tight, champs!";
+            }
 
-    function twelveHour(hour) {
-      if (hour > 12) return hour - 12;
-      else if (hour === 0) return 12;
-      else return hour;
-    }
+            document.getElementById("greet").textContent = greetText;
+        }
 
-    function zeros(num) {
-      return num < 10 ? '0' + num : num;
-    }
+        setInterval(updateClock, 1000);
+        updateClock(); // initial call
+    </script>
 
-    function dateTime() {
-      date();
-      clock();
-      setTimeout(dateTime, 500);
-    }
-
-    dateTime();
-  </script>
 </body>
 </html>
