@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Greeting Widget</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #F4F4F4;
+      font-family: 'Bebas Neue', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .greeting-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      color: #192A56;
+      border-radius: 12px;
+      padding: 15px 30px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 700px;
+      font-size: 1.5rem;
+    }
+
+    .greet {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+    }
+
+    .date, .clock {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="greeting-box">
+    <div class="greet" id="greetText">Loading...</div>
+    <div class="date" id="dateText"></div>
+    <div class="clock" id="clockText"></div>
+  </div>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+      const day = weekday[now.getDay()];
+      const month = now.toLocaleString('default', { month: 'short' }).toUpperCase();
+      const date = now.getDate();
+      const year = now.getFullYear();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      const hh = hours % 12 || 12;
+      const mm = minutes.toString().padStart(2, '0');
+      const ss = seconds.toString().padStart(2, '0');
+
+      // Greeting based on time
+      let greetMsg = "Hello!";
+      if (hours < 12) {
+        greetMsg = "Rise and shine, Team!";
+      } else if (hours < 17) {
+        greetMsg = "Halfway there, keep it up!";
+      } else if (hours < 21) {
+        greetMsg = "You did great today!";
+      } else {
+        greetMsg = "Sleep tight, champs!";
+      }
+
+      document.getElementById('greetText').textContent = greetMsg;
+      document.getElementById('dateText').textContent = `${day} ${month} ${date} ${year}`;
+      document.getElementById('clockText').textContent = `${hh} : ${mm} : ${ss} ${ampm}`;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
