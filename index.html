@@ -4,40 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jam Digital Notion</title>
-  <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 
   <style>
-    html, body {
+    body {
+      background-color: transparent;
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Roboto', sans-serif;
     }
 
-    .container {
-      padding: 1em;
-      box-sizing: border-box;
-      resize: both;
-      overflow: auto;
-      display: inline-block;
+    .full-table {
+      display: table;
+      height: 100vh;
+      width: 100%;
+    }
+
+    .table-cell {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
     }
 
     .card {
       padding: 10px 25px;
       border-radius: 10px;
-      background-color: #F4F4F4;
+      background: #f9f9f9;
       color: #192A56;
       border: 2px solid #192A56;
       display: inline-block;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    .card:hover {
-      margin-top: 2px;
     }
 
     .clock {
@@ -58,75 +53,75 @@
 
     .date, .greet {
       display: block;
-      min-width: 162px;
+      min-width: 200px;
       font-size: 1.2em;
+      margin-bottom: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
-      <div class="greet" id="greet"></div>
-      <div class="date" id="date"></div>
-      <div class="clock">
-        <div class="time" id="hour"></div>
-        <div class="colon">:</div>
-        <div class="time" id="min"></div>
-        <div class="colon">:</div>
-        <div class="time" id="sec"></div>
+  <div class="full-table">
+    <div class="table-cell">
+      <div class="card">
+        <div class="greet" id="greet"></div>
+        <div class="date" id="date"></div>
+        <div class="clock">
+          <div class="time" id="hour"></div>
+          <div class="colon">:</div>
+          <div class="time" id="min"></div>
+          <div class="colon">:</div>
+          <div class="time" id="sec"></div>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    function date() {
-      var today = new Date();
-      document.getElementById('date').innerHTML = today.toDateString();
-    }
+    function updateDateTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
 
-    function clock() {
-      var today = new Date();
-      var hour = zeros(twelveHour(today.getHours()));
-      var minutes = zeros(today.getMinutes());
-      var seconds = zeros(today.getSeconds());
-      if(today.getHours() >= 12){
-        seconds += " pm";
+      const hourDisplay = zeros(twelveHour(hours));
+      const minuteDisplay = zeros(minutes);
+      const secondDisplay = zeros(seconds) + (hours >= 12 ? " pm" : " am");
+
+      document.getElementById("hour").innerHTML = hourDisplay;
+      document.getElementById("min").innerHTML = minuteDisplay;
+      document.getElementById("sec").innerHTML = secondDisplay;
+
+      document.getElementById("date").innerHTML = now.toDateString();
+
+      let greeting = "";
+      if (hours >= 0 && hours < 5) {
+        greeting = "Sleep tight, champs!";
+      } else if (hours >= 5 && hours < 12) {
+        greeting = "Rise and shine, Team!";
+      } else if (hours >= 12 && hours < 17) {
+        greeting = "Halfway there, keep it up!";
+      } else if (hours >= 17 && hours < 21) {
+        greeting = "You did great today!";
       } else {
-        seconds += " am";
+        greeting = "Sleep tight, champs!";
       }
 
-      var hrs = today.getHours();
-      if (hrs < 12)
-        greet = 'Good Morning';
-      else if (hrs >= 12 && hrs <= 17)
-        greet = 'Good Afternoon';
-      else if (hrs >= 17 && hrs <= 24)
-        greet = 'Good Evening';
+      document.getElementById("greet").innerHTML = greeting;
 
-      document.getElementById('greet').innerHTML = greet;
-      document.getElementById('hour').innerHTML = hour;
-      document.getElementById('min').innerHTML = minutes;
-      document.getElementById('sec').innerHTML = seconds;
+      setTimeout(updateDateTime, 500);
     }
 
     function twelveHour(hour) {
-      if (hour > 12) return hour -= 12;
-      else if (hour === 0) return hour = 12;
+      if (hour === 0) return 12;
+      else if (hour > 12) return hour - 12;
       else return hour;
     }
 
     function zeros(num) {
-      return num < 10 ? '0' + num : num;
+      return num < 10 ? "0" + num : num;
     }
 
-    function dateTime() {
-      date();
-      clock();
-      setTimeout(dateTime, 500);
-    }
-
-    dateTime();
+    updateDateTime();
   </script>
 </body>
 </html>
-
