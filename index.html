@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Jam Digital Notion</title>
-  <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 
   <style>
     html, body {
@@ -21,8 +21,6 @@
     .container {
       padding: 1em;
       box-sizing: border-box;
-      resize: both;
-      overflow: auto;
       display: inline-block;
     }
 
@@ -74,6 +72,7 @@
         <div class="time" id="min"></div>
         <div class="colon">:</div>
         <div class="time" id="sec"></div>
+        <div class="time" id="ampm"></div>
       </div>
     </div>
   </div>
@@ -86,28 +85,27 @@
 
     function clock() {
       const today = new Date();
-      let hour = zeros(twelveHour(today.getHours()));
-      let minutes = zeros(today.getMinutes());
-      let seconds = zeros(today.getSeconds());
-
-      seconds += today.getHours() >= 12 ? " pm" : " am";
-
       const hrs = today.getHours();
-      let greet = '';
+      const hour = zeros(twelveHour(hrs));
+      const minutes = zeros(today.getMinutes());
+      const seconds = zeros(today.getSeconds());
+      const ampm = hrs >= 12 ? "pm" : "am";
 
+      let greet = '';
       if (hrs >= 0 && hrs < 12)
         greet = 'Rise and shine, Team!';
       else if (hrs >= 12 && hrs < 17)
         greet = 'Halfway there, keep it up!';
       else if (hrs >= 17 && hrs < 22)
         greet = 'You did great today!';
-      else if (hrs >= 22)
+      else
         greet = 'Sleep tight, champs!';
 
       document.getElementById('greet').innerHTML = greet;
       document.getElementById('hour').innerHTML = hour;
       document.getElementById('min').innerHTML = minutes;
       document.getElementById('sec').innerHTML = seconds;
+      document.getElementById('ampm').innerHTML = " " + ampm;
     }
 
     function twelveHour(hour) {
@@ -130,4 +128,3 @@
   </script>
 </body>
 </html>
-
