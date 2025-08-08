@@ -1,115 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
+<html> 
 <head>
-  <meta charset="UTF-8">
-  <title>Greeting Widget</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #F5F5F5;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .greeting-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #ffffff;
-      color: #192A56;
-      border-radius: 16px;
-      padding: 20px 40px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-      width: 90%;
-      max-width: 1000px;
-    }
-
-    .greet {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .date, .clock {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 500;
-    }
-
-    .center, .right {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      text-align: center;
-    }
-
-    .left {
-      flex: 1;
-      text-align: left;
-    }
-
-    .right {
-      text-align: right;
-    }
-
-    @media screen and (max-width: 600px) {
-      .greeting-box {
-        flex-direction: column;
-        gap: 10px;
-        padding: 20px;
-      }
-
-      .left, .center, .right {
-        text-align: center;
-        justify-content: center;
-      }
-    }
-  </style>
+    <title>Greeting Message</title> 
+    <style>
+#lbl {
+    font-family: monospace;
+    font-size: xx-large;
+    color: #8B0000; /* warna tulisan */
+    padding: 5px;
+    border: 1px solid #8B0000; /* warna border */
+    text-align: center;
+    line-height: 1.5;
+    height: 85%;
+}
+#date {
+    font-size: large;
+    color: #8B0000; /* warna tanggal */
+}
+body {
+    background-color: aliceblue;
+}
+    </style>
 </head>
 <body>
-  <div class="greeting-box">
-    <div class="left greet" id="greetText">Loading...</div>
-    <div class="center date" id="dateText"></div>
-    <div class="right clock" id="clockText"></div>
-  </div>
+    <div id="lbl"></div>
+</body>
 
-  <script>
-    function updateTime() {
-      const now = new Date();
-      const hours = now.getHours();
-      const minutes = now.getMinutes();
+<script>
+    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    
+    var today = new Date();
+    var hrs = today.getHours();
+    var dayOfWeek = weekday[today.getDay()];
+    var date = dayOfWeek + " " + today.getDate() + "/" + (today.getMonth() + 1) + '/' + today.getFullYear();
 
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = now.toLocaleString('default', { month: 'long' });
-      const year = now.getFullYear();
+    var greet;
 
-      const hh = String(hours).padStart(2, '0');
-      const mm = String(minutes).padStart(2, '0');
-
-      // Greeting based on time
-      let greetMsg = "Hello!";
-      if (hours < 12) {
-        greetMsg = "Rise and shine, Team!";
-      } else if (hours < 17) {
-        greetMsg = "Halfway there, keep it up!";
-      } else if (hours < 21) {
-        greetMsg = "You did great today!";
-      } else {
-        greetMsg = "Sleep tight, champs!";
-      }
-
-      document.getElementById('greetText').textContent = greetMsg;
-      document.getElementById('dateText').textContent = `${day} ${month} ${year}`;
-      document.getElementById('clockText').textContent = `${hh}:${mm}`;
+    if (hrs < 12) {
+        greet = 'RISE AND SHINE, TEAM!';
+    } else if (hrs >= 12 && hrs < 17) {
+        greet = 'MIDDAY, MAKE IT COUNT!';
+    } else if (hrs >= 17 && hrs < 21) {
+        greet = "THAT'S A WRAP";
+    } else {
+        greet = "POWER DOWN";
     }
 
-    updateTime();
-    setInterval(updateTime, 1000);
-  </script>
-</body>
+    document.getElementById('lbl').innerHTML =
+        greet + `<div id="date">It's ${date}</div>`;
+</script> 
 </html>
+
